@@ -2,45 +2,46 @@ package com.landim001.cadastro_usuario.business;
 
 import com.landim001.cadastro_usuario.infrastructure.entities.Usuario;
 import com.landim001.cadastro_usuario.infrastructure.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
-    private final UsuarioRepository repository;
+    private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository repository){
-        this.repository = repository;
+    // CREATE
+    public Usuario salvarUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 
-    public void salvarUsuario(Usuario usuario){
-        repository.saveAndFlush(usuario);
+    // READ - listar todos
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
     }
 
-    public Usuario buscarUsuarioPorEmail(String email){
-        return repository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("Email não encontrado")
-        );
+    // READ - buscar por ID
+    public Usuario buscarPorId(Integer id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    public void deletarUsuarioPorEmail(String email){
-        repository.deleteByEmail(email);
+    // UPDATE
+    public Usuario atualizarUsuario(Integer id, Usuario usuarioAtualizado) {
+        Usuario usuario = buscarPorId(id);
+
+        usuario.setNome(usuarioAtualizado.getNome());
+        usuario.setEmail(usuarioAtualizado.getEmail());
+
+        return usuarioRepository.save(usuario);
     }
 
-    public void atualizarUsuarioPorId(Integer id, Usuario usuario){
-        Usuario usuarioEntity = repository.findById(id).orElseThrow(() ->
-                new RuntimeException("Usuario não encontrado"));
-        Usuario usuarioAtualizado = Usuario.builder()
-                .email(usuario.getEmail() != null ? usuario.getEmail() :
-                        usuarioEntity.getEmail())
-                .nome(usuario.getNome() != null ? usuario.getNome() :
-                        usuarioEntity.getNome())
-                .id(usuarioEntity.getId())
-                .build();
-
-        repository.saveAndFlush(usuarioAtualizado);
+    // DELETE
+    public void deletarUsuario(Integer id) {
+        Usuario usuario = buscarPorId(id);
+        usuarioRepository.delete(usuario);
     }
-
-
 }
