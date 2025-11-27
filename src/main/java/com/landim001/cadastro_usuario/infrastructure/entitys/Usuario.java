@@ -1,5 +1,4 @@
-package com.landim001.cadastro_usuario.infrastructure.entities;
-
+package com.landim001.cadastro_usuario.infrastructure.entitys;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,8 +10,6 @@ import lombok.*;
 @Builder
 @Table(name = "usuario")
 @Entity
-
-
 public class Usuario {
 
     @Id
@@ -24,6 +21,4 @@ public class Usuario {
 
     @Column(name = "nome")
     private String nome;
-
-
 }

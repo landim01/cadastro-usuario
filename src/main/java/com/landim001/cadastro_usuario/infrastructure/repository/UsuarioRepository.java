@@ -1,8 +1,9 @@
-package com.landim001.cadastro_usuario.infrastructure.repositories;
+package com.landim001.cadastro_usuario.infrastructure.repository;
 
-import com.landim001.cadastro_usuario.infrastructure.entities.Usuario;
-import jakarta.transaction.Transactional;
+import com.landim001.cadastro_usuario.infrastructure.entitys.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
@@ -11,5 +12,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Transactional
     void deleteByEmail(String email);
-
 }
